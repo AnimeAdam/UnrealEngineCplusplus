@@ -22,7 +22,17 @@ void UGrabber::BeginPlay()
 	FString ObjectName = GetOwner()->GetName();
 	FString ObjectPos = GetOwner()->GetTransform().GetLocation().ToString();
 	UE_LOG(LogTemp, Warning, TEXT("%s is at %s"), *ObjectName, *ObjectPos);
-	
+
+	//Getter for components
+	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
+	if (PhysicsHandle)
+	{
+
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("% missing Physics handle component!"), *GetOwner()->GetName());
+	}
 }
 
 
@@ -33,14 +43,14 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 	FVector PlayerViewPointLocation;
 	FRotator PlayerViewPointRotation;
+	FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector()*Reach;//FVector(0.f, 0.f, 50.f);
 
 	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(PlayerViewPointLocation, PlayerViewPointRotation);
 
+	///Debug code for finding the Object's location and rotation
 	/*UE_LOG(LogTemp, Warning, TEXT("Location: %s Rotation %s"),
 		*PlayerViewPointLocation.ToString(),
 		*PlayerViewPointRotation.ToString());*/
-
-	FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector()*Reach;//FVector(0.f, 0.f, 50.f);
 
 	DrawDebugLine(
 		GetWorld(),
@@ -53,5 +63,22 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		10.f
 		);
 
-}
+	//Setup query parameters for collisions, so here ignore self.
+	FCollisionQueryParams TraceParameters = FCollisionQueryParams(FName(TEXT("")), false, GetOwner());
 
+	///For ray-tracing query collision
+	FHitResult Hit;	
+	GetWorld()->LineTraceSingleByObjectType(
+		Hit,
+		PlayerViewPointLocation,
+		LineTraceEnd,
+		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),
+		TraceParameters
+	);
+
+	AActor* ActorHit = Hit.GetActor();
+	if (ActorHit)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s is hit!"), *(ActorHit->GetName()));
+	}
+}
