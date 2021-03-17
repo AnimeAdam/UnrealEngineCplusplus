@@ -23,7 +23,7 @@ void UGrabber::BeginPlay()
 	FString ObjectPos = GetOwner()->GetTransform().GetLocation().ToString();
 	UE_LOG(LogTemp, Warning, TEXT("%s is at %s"), *ObjectName, *ObjectPos);
 
-	//Getter for components
+	///Getter for components
 	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
 	if (PhysicsHandle)
 	{
@@ -32,6 +32,18 @@ void UGrabber::BeginPlay()
 	else
 	{
 		UE_LOG(LogTemp, Error, TEXT("% missing Physics handle component!"), *GetOwner()->GetName());
+	}
+
+	///Getter for components
+	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
+	if (InputComponent)
+	{
+		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);
+		InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);
+	}
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("% missing Input handle component!"), *GetOwner()->GetName());
 	}
 }
 
@@ -81,4 +93,14 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	{
 		UE_LOG(LogTemp, Warning, TEXT("%s is hit!"), *(ActorHit->GetName()));
 	}
+}
+
+void UGrabber::Grab()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grab is pressed"));
+}
+
+void UGrabber::Release()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grab is released"));
 }
