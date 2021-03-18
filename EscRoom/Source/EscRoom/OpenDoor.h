@@ -33,6 +33,9 @@ public:
 
 	UPROPERTY(BlueprintAssignable)
 	FOnOpenRequest OnOpenRequest;
+
+	UPROPERTY(BlueprintAssignable)
+	FOnOpenRequest OnCloseRequest;
 	
 private:
 	UPROPERTY(EditAnywhere)
@@ -47,6 +50,9 @@ private:
 	float DoorCloseDelay = 2.f;
 
 	float LastDoorOpenTime = 0.f;
+
+	UPROPERTY(EditAnywhere)
+	float TriggerMass = 30.f;
 
 	AActor* Owner;
 
