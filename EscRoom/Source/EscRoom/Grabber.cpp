@@ -30,7 +30,7 @@ void UGrabber::FindPhysicsHandleComponent()
 	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
 	if (PhysicsHandle == nullptr)
 	{
-		UE_LOG(LogTemp, Error, TEXT("%s missing physics handle component"), *GetOwner()->GetName())
+		UE_LOG(LogTemp, Error, TEXT("%s missing physics handle component"), *GetOwner()->GetName());
 	}
 }
 
@@ -74,7 +74,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	//	10.f
 	//);
 
-	if (!PhysicsHandle) { return; }
+	if (!PhysicsHandle) { UE_LOG(LogTemp, Error, TEXT("%s missing physics handle component"), *GetOwner()->GetName()); return; }
 	// if the physics handle is attached
 	if (PhysicsHandle->GrabbedComponent)
 	{

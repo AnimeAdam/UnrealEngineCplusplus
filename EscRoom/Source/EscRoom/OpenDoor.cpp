@@ -21,6 +21,7 @@ void UOpenDoor::BeginPlay()
 		
 	//ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 	Owner = GetOwner();
+	if (!PressurePlate) { UE_LOG(LogTemp, Error, TEXT("%s missing pressure plate"), *GetOwner()->GetName()); }
 }
 
 void UOpenDoor::OpenDoor()
@@ -57,7 +58,12 @@ float UOpenDoor::GetTotalMassOfActorsOnPlate()
 	float TotalMass = 0.f;
 	TArray<AActor*> OverlappingActors;
 
+	if (!PressurePlate) { UE_LOG(LogTemp, Error, TEXT("%s missing pressure plate"), *GetOwner()->GetName()); return TotalMass; }
 	PressurePlate->GetOverlappingActors(OverlappingActors);
+	if (PressurePlate == nullptr)
+	{
+		UE_LOG(LogTemp, Error, TEXT("PressurePlate has not been found"));
+	}
 
 	for (const auto* Actor: OverlappingActors)
 	{
