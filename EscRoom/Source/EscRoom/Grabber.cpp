@@ -54,6 +54,26 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	///Debug code for finding the Object's location and rotation
+	/*UE_LOG(LogTemp, Warning, TEXT("Location: %s Rotation %s"),
+		*PlayerViewPointLocation.ToString(),
+		*PlayerViewPointRotation.ToString());*/
+
+	///Shows debuging line
+	//FVector PlayerViewPointLocation;
+	//FRotator PlayerViewPointRotation;
+	//FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector()*Reach;//FVector(0.f, 0.f, 50.f);
+	//DrawDebugLine(
+	//	GetWorld(),
+	//	PlayerViewPointLocation,
+	//	LineTraceEnd,
+	//	FColor(255, 0, 0),
+	//	false,
+	//	0.f,
+	//	0.f,
+	//	10.f
+	//);
+
 	if (!PhysicsHandle) { return; }
 	// if the physics handle is attached
 	if (PhysicsHandle->GrabbedComponent)
