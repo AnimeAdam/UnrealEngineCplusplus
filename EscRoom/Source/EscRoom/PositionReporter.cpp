@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "PositionReporter.h"
 #include "EscRoom.h"
 #include "Actor.h"
-#include "PositionReporter.h"
 
 // Sets default values for this component's properties
 UPositionReporter::UPositionReporter()
